@@ -55,7 +55,7 @@ export default function SettingsPage() {
                                     label="Username"
                                     placeholder="username"
                                 />
-                                <p className="text-sm text-gray-400">This is your public profile URL: quickly.com/u/username</p>
+                                <p className="text-sm text-gray-400">This is your public profile URL: quickly.website/u/username</p>
                             </div>
                             <Button type="submit" isLoading={isLoading}>
                                 Save Changes

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { updateProfile, updateTheme, updateTemplate, checkUsernameAvailability, uploadAvatar } from '@/actions/profile';
 import { HexColorPicker } from 'react-colorful';
 import { toast } from 'sonner';
-import { Check, X, Loader2, Upload, Camera } from 'lucide-react';
+import { Check, X, Loader2, Upload, Camera, Lock } from 'lucide-react';
 import { ThemeConfig, TemplateId, DEFAULT_THEME, FONT_OPTIONS, RADIUS_OPTIONS } from '@/types/theme';
 import Image from 'next/image';
 
@@ -173,8 +173,15 @@ export default function ProfileEditPageClient({
                     value={profile.username || ''}
                     onChange={(e) => setProfile({ ...profile, username: e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, '') })}
                     placeholder="johndoe"
-                    helper="Your public profile URL: quickly.com/u/yourname"
+                    helper={initialProfile.username ? undefined : "Your public profile URL: quickly.website/u/yourname"}
+                    disabled={!!initialProfile.username}
                   />
+                  {initialProfile.username && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-amber-400">
+                      <Lock className="w-4 h-4" />
+                      <span>Username is permanent and cannot be changed (used for QR codes & printed cards)</span>
+                    </div>
+                  )}
                   {isCheckingUsername && (
                     <div className="mt-2 flex items-center gap-2 text-sm text-gray-400">
                       <Loader2 className="w-4 h-4 animate-spin" />

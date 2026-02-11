@@ -143,70 +143,72 @@ export default function AdminCardsPage() {
             {/* Cards Table */}
             <Card>
                 <CardContent className="p-0">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-white/10">
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Card UID</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Status</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Assigned To</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Created</th>
-                                <th className="text-right p-4 text-sm font-medium text-gray-400">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredCards.map((card) => (
-                                <tr key={card.id} className="border-b border-white/5 hover:bg-white/5">
-                                    <td className="p-4">
-                                        <code className="text-brand-gold">{card.card_uid}</code>
-                                    </td>
-                                    <td className="p-4">{getStatusBadge(card.status)}</td>
-                                    <td className="p-4">
-                                        {card.profiles ? (
-                                            <div>
-                                                <p className="font-medium">{card.profiles.full_name}</p>
-                                                <p className="text-sm text-gray-400">@{card.profiles.username}</p>
-                                            </div>
-                                        ) : (
-                                            <span className="text-gray-500">—</span>
-                                        )}
-                                    </td>
-                                    <td className="p-4 text-gray-400">
-                                        {new Date(card.created_at).toLocaleDateString()}
-                                    </td>
-                                    <td className="p-4 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            {card.status === 'in_stock' && (
-                                                <Button size="sm" variant="outline">
-                                                    <UserPlus className="w-4 h-4 mr-1" />
-                                                    Assign
-                                                </Button>
-                                            )}
-                                            {card.status === 'assigned' && (
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    className="text-red-400"
-                                                    onClick={() => handleStatusChange(card.id, 'disabled')}
-                                                >
-                                                    <Ban className="w-4 h-4 mr-1" />
-                                                    Disable
-                                                </Button>
-                                            )}
-                                            {card.status === 'disabled' && (
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    onClick={() => handleStatusChange(card.id, 'in_stock')}
-                                                >
-                                                    Re-enable
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </td>
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="border-b border-white/10">
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Card UID</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Status</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Assigned To</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Created</th>
+                                    <th className="text-right p-4 text-sm font-medium text-gray-400">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filteredCards.map((card) => (
+                                    <tr key={card.id} className="border-b border-white/5 hover:bg-white/5">
+                                        <td className="p-4">
+                                            <code className="text-brand-gold">{card.card_uid}</code>
+                                        </td>
+                                        <td className="p-4">{getStatusBadge(card.status)}</td>
+                                        <td className="p-4">
+                                            {card.profiles ? (
+                                                <div>
+                                                    <p className="font-medium">{card.profiles.full_name}</p>
+                                                    <p className="text-sm text-gray-400">@{card.profiles.username}</p>
+                                                </div>
+                                            ) : (
+                                                <span className="text-gray-500">—</span>
+                                            )}
+                                        </td>
+                                        <td className="p-4 text-gray-400">
+                                            {new Date(card.created_at).toLocaleDateString()}
+                                        </td>
+                                        <td className="p-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                {card.status === 'in_stock' && (
+                                                    <Button size="sm" variant="outline">
+                                                        <UserPlus className="w-4 h-4 mr-1" />
+                                                        Assign
+                                                    </Button>
+                                                )}
+                                                {card.status === 'assigned' && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="text-red-400"
+                                                        onClick={() => handleStatusChange(card.id, 'disabled')}
+                                                    >
+                                                        <Ban className="w-4 h-4 mr-1" />
+                                                        Disable
+                                                    </Button>
+                                                )}
+                                                {card.status === 'disabled' && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        onClick={() => handleStatusChange(card.id, 'in_stock')}
+                                                    >
+                                                        Re-enable
+                                                    </Button>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     {filteredCards.length === 0 && (
                         <div className="p-8 text-center text-gray-400">
                             No cards found

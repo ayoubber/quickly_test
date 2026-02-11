@@ -9,18 +9,21 @@ import {
     Apple,
     Smartphone as Android
 } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
-export default function HowItWorksPage() {
+export default async function HowItWorksPage() {
+    const t = await getTranslations('howItWorks');
+
     return (
         <div className="py-20">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                        How <span className="gradient-text">Quickly</span> Works
+                        <span className="gradient-text">{t('title')}</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                        Share your digital identity in seconds with NFC tap or QR scan.
+                        {t('subtitle')}
                     </p>
                 </div>
 
@@ -30,28 +33,22 @@ export default function HowItWorksPage() {
                         <div className="w-20 h-20 bg-brand-gold/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
                             <span className="text-3xl font-bold text-brand-gold">1</span>
                         </div>
-                        <h3 className="text-xl font-semibold mb-3">Get Your Card</h3>
-                        <p className="text-gray-400">
-                            Order your premium NFC + QR card and receive it with your unique activation code.
-                        </p>
+                        <h3 className="text-xl font-semibold mb-3">{t('step1Title')}</h3>
+                        <p className="text-gray-400">{t('step1Desc')}</p>
                     </div>
                     <div className="text-center">
                         <div className="w-20 h-20 bg-brand-gold/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
                             <span className="text-3xl font-bold text-brand-gold">2</span>
                         </div>
-                        <h3 className="text-xl font-semibold mb-3">Set Up Profile</h3>
-                        <p className="text-gray-400">
-                            Activate your card, customize your profile with links, and choose your theme.
-                        </p>
+                        <h3 className="text-xl font-semibold mb-3">{t('step2Title')}</h3>
+                        <p className="text-gray-400">{t('step2Desc')}</p>
                     </div>
                     <div className="text-center">
                         <div className="w-20 h-20 bg-brand-gold/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
                             <span className="text-3xl font-bold text-brand-gold">3</span>
                         </div>
-                        <h3 className="text-xl font-semibold mb-3">Share Instantly</h3>
-                        <p className="text-gray-400">
-                            Tap your card on any smartphone or have them scan the QR code.
-                        </p>
+                        <h3 className="text-xl font-semibold mb-3">{t('step3Title')}</h3>
+                        <p className="text-gray-400">{t('step3Desc')}</p>
                     </div>
                 </div>
 
@@ -152,14 +149,12 @@ export default function HowItWorksPage() {
 
                 {/* CTA */}
                 <div className="text-center">
-                    <h2 className="text-2xl font-bold mb-4">Ready to Go Digital?</h2>
-                    <p className="text-gray-400 mb-6">
-                        Get your Quickly card and start making connections.
-                    </p>
+                    <h2 className="text-2xl font-bold mb-4">{t('ctaTitle')}</h2>
+                    <p className="text-gray-400 mb-6">{t('ctaSubtitle')}</p>
                     <Link href="/store">
                         <Button size="lg">
-                            Order Now
-                            <ArrowRight className="w-5 h-5 ml-2" />
+                            {t('ctaButton')}
+                            <ArrowRight className="w-5 h-5 ms-2" />
                         </Button>
                     </Link>
                 </div>

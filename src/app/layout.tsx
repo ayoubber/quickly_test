@@ -1,7 +1,9 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'sonner';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -22,17 +24,29 @@ export const metadata: Metadata = {
   keywords: ['NFC cards', 'QR codes', 'digital business cards', 'link in bio'],
 };
 
-export default function RootLayout({
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const dir = locale === 'ar' ? 'rtl' : 'ltr';
+
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang={locale} dir={dir} className={`${inter.variable} ${poppins.variable}`}>
       <body className="min-h-screen bg-brand-navy text-white antialiased">
-        {children}
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
         <Toaster
-          position="top-right"
+          position={locale === 'ar' ? 'top-left' : 'top-right'}
           toastOptions={{
             style: {
               background: '#1F2937',

@@ -115,69 +115,71 @@ export default function AdminOrdersPage() {
             {/* Orders Table */}
             <Card>
                 <CardContent className="p-0">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-white/10">
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Order ID</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Customer</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Product</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Amount</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Status</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Date</th>
-                                <th className="text-right p-4 text-sm font-medium text-gray-400">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredOrders.map((order) => (
-                                <tr key={order.id} className="border-b border-white/5 hover:bg-white/5">
-                                    <td className="p-4">
-                                        <code className="text-sm">#{order.id.slice(0, 8)}</code>
-                                    </td>
-                                    <td className="p-4">
-                                        <p className="font-medium">{order.profiles?.full_name || 'Unknown'}</p>
-                                        <p className="text-sm text-gray-400">@{order.profiles?.username || 'N/A'}</p>
-                                    </td>
-                                    <td className="p-4">
-                                        {order.products?.name || 'Unknown Product'}
-                                    </td>
-                                    <td className="p-4 font-semibold">
-                                        {order.amount?.toLocaleString()} DZD
-                                    </td>
-                                    <td className="p-4">
-                                        {getStatusBadge(order.status)}
-                                    </td>
-                                    <td className="p-4 text-gray-400">
-                                        {new Date(order.created_at).toLocaleDateString()}
-                                    </td>
-                                    <td className="p-4 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            {order.status === 'pending' && (
-                                                <>
-                                                    <Button
-                                                        size="sm"
-                                                        onClick={() => updateOrderStatus(order.id, 'paid')}
-                                                    >
-                                                        Mark Paid
-                                                    </Button>
-                                                    <Button
-                                                        size="sm"
-                                                        variant="outline"
-                                                        className="text-red-400"
-                                                        onClick={() => updateOrderStatus(order.id, 'cancelled')}
-                                                    >
-                                                        Cancel
-                                                    </Button>
-                                                </>
-                                            )}
-                                            <Button size="sm" variant="ghost">
-                                                <MessageCircle className="w-4 h-4" />
-                                            </Button>
-                                        </div>
-                                    </td>
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="border-b border-white/10">
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Order ID</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Customer</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Product</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Amount</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Status</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Date</th>
+                                    <th className="text-right p-4 text-sm font-medium text-gray-400">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filteredOrders.map((order) => (
+                                    <tr key={order.id} className="border-b border-white/5 hover:bg-white/5">
+                                        <td className="p-4">
+                                            <code className="text-sm">#{order.id.slice(0, 8)}</code>
+                                        </td>
+                                        <td className="p-4">
+                                            <p className="font-medium">{order.profiles?.full_name || 'Unknown'}</p>
+                                            <p className="text-sm text-gray-400">@{order.profiles?.username || 'N/A'}</p>
+                                        </td>
+                                        <td className="p-4">
+                                            {order.products?.name || 'Unknown Product'}
+                                        </td>
+                                        <td className="p-4 font-semibold">
+                                            {order.amount?.toLocaleString()} DZD
+                                        </td>
+                                        <td className="p-4">
+                                            {getStatusBadge(order.status)}
+                                        </td>
+                                        <td className="p-4 text-gray-400">
+                                            {new Date(order.created_at).toLocaleDateString()}
+                                        </td>
+                                        <td className="p-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                {order.status === 'pending' && (
+                                                    <>
+                                                        <Button
+                                                            size="sm"
+                                                            onClick={() => updateOrderStatus(order.id, 'paid')}
+                                                        >
+                                                            Mark Paid
+                                                        </Button>
+                                                        <Button
+                                                            size="sm"
+                                                            variant="outline"
+                                                            className="text-red-400"
+                                                            onClick={() => updateOrderStatus(order.id, 'cancelled')}
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                    </>
+                                                )}
+                                                <Button size="sm" variant="ghost">
+                                                    <MessageCircle className="w-4 h-4" />
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     {filteredOrders.length === 0 && (
                         <div className="p-8 text-center text-gray-400">
                             No orders found

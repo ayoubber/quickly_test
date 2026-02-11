@@ -5,11 +5,14 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { signUp } from '@/actions/auth';
-import { Zap } from 'lucide-react';
+import Logo from '@/components/ui/logo';
+import OAuthButtons from '@/components/auth/oauth-buttons';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 export default function RegisterPage() {
     const [isLoading, setIsLoading] = useState(false);
+    const t = useTranslations('auth');
 
     async function handleSubmit(formData: FormData) {
         setIsLoading(true);
@@ -40,41 +43,55 @@ export default function RegisterPage() {
 
             <div className="w-full max-w-md">
                 {/* Logo */}
-                <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-                    <div className="w-12 h-12 bg-gradient-to-br from-brand-gold to-brand-gold-light rounded-lg flex items-center justify-center">
-                        <Zap className="w-7 h-7 text-brand-navy" />
+                <div className="text-center mb-8">
+                    <div className="inline-block mb-6">
+                        <Link href="/">
+                            <Logo className="w-12 h-12" textClassName="text-3xl" />
+                        </Link>
                     </div>
-                    <span className="text-2xl font-bold gradient-text">Quickly</span>
-                </Link>
+                </div>
 
                 <div className="glass rounded-2xl p-8">
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold mb-2">Create Account</h1>
-                        <p className="text-gray-400">Start sharing your links today</p>
+                        <h1 className="text-3xl font-bold mb-2">{t('registerTitle')}</h1>
+                        <p className="text-gray-400">{t('registerSubtitle')}</p>
+                    </div>
+
+                    <OAuthButtons />
+
+                    <div className="relative my-8">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t border-white/10" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-[#1f2937] px-2 text-gray-400">
+                                {t('orContinueWith')}
+                            </span>
+                        </div>
                     </div>
 
                     <form action={handleSubmit} className="space-y-6">
                         <Input
                             name="full_name"
                             type="text"
-                            label="Full Name"
-                            placeholder="John Doe"
+                            label={t('fullNameLabel')}
+                            placeholder={t('fullNamePlaceholder')}
                             required
                         />
 
                         <Input
                             name="email"
                             type="email"
-                            label="Email"
-                            placeholder="you@example.com"
+                            label={t('emailLabel')}
+                            placeholder={t('emailPlaceholder')}
                             required
                         />
 
                         <Input
                             name="password"
                             type="password"
-                            label="Password"
-                            placeholder="••••••••"
+                            label={t('passwordLabel')}
+                            placeholder={t('passwordPlaceholder')}
                             required
                             minLength={8}
                         />
@@ -82,21 +99,21 @@ export default function RegisterPage() {
                         <Input
                             name="confirmPassword"
                             type="password"
-                            label="Confirm Password"
-                            placeholder="••••••••"
+                            label={t('passwordLabel')}
+                            placeholder={t('passwordPlaceholder')}
                             required
                             minLength={8}
                         />
 
                         <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
-                            Create Account
+                            {isLoading ? t('signingUp') : t('signUp')}
                         </Button>
                     </form>
 
                     <div className="mt-6 text-center text-sm text-gray-400">
-                        Already have an account?{' '}
+                        {t('hasAccount')}{' '}
                         <Link href="/auth/login" className="text-brand-gold hover:text-brand-gold-light transition font-semibold">
-                            Sign in
+                            {t('signIn')}
                         </Link>
                     </div>
                 </div>

@@ -14,12 +14,12 @@ const config: Config = {
         'brand-navy': {
           DEFAULT: '#0B0F1A',
           light: '#1F2937',
-          dark: '#05070C',
+          dark: '#050810',
         },
         'brand-gold': {
           DEFAULT: '#D4AF37',
-          light: '#F4D05D',
-          dark: '#B4941F',
+          light: '#E5C158',
+          dark: '#B8941F',
         },
       },
       fontFamily: {

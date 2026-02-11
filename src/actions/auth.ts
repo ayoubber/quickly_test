@@ -65,13 +65,26 @@ export async function signIn(formData: FormData) {
 
   const { email, password } = validatedFields.data;
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data: { user }, error: signInError } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
-    return { error: error.message };
+  if (signInError) {
+    return { error: signInError.message };
+  }
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    // Check if user is admin
+    if (profile && (profile as any).role === 'admin') {
+      redirect('/admin');
+    }
   }
 
   redirect('/dashboard');
@@ -96,17 +109,21 @@ export async function resetPassword(email: string) {
 
   return { success: true };
 }
-
-export async function updatePassword(password: string) {
+export async function signInWithOAuth(provider: 'google' | 'github') {
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.updateUser({
-    password,
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+    },
   });
 
   if (error) {
     return { error: error.message };
   }
 
-  return { success: true };
+  if (data.url) {
+    redirect(data.url);
+  }
 }

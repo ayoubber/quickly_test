@@ -2,45 +2,48 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Palette, Code, Megaphone, Wrench, ArrowRight } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
-const services = [
-    {
-        icon: Palette,
-        title: 'Custom Card Design',
-        description: 'Get a unique card design that perfectly represents your brand. Our designers create stunning visuals that make lasting impressions.',
-        features: ['Brand alignment', 'Multiple revisions', 'Print-ready files'],
-    },
-    {
-        icon: Code,
-        title: 'Profile Setup',
-        description: 'We help you set up and optimize your digital profile for maximum engagement. Get more clicks and connections.',
-        features: ['Profile optimization', 'Link strategy', 'Analytics setup'],
-    },
-    {
-        icon: Megaphone,
-        title: 'Bulk Orders',
-        description: 'Perfect for businesses and events. Order cards for your entire team with volume discounts and consistent branding.',
-        features: ['Volume discounts', 'Team management', 'Custom packaging'],
-    },
-    {
-        icon: Wrench,
-        title: 'Enterprise Solutions',
-        description: 'Custom integrations, dedicated support, and advanced features for large organizations.',
-        features: ['API access', 'White-label options', 'Priority support'],
-    },
-];
+export default async function ServicesPage() {
+    const t = await getTranslations('services');
 
-export default function ServicesPage() {
+    const services = [
+        {
+            icon: Palette,
+            title: t('personalCards'),
+            description: t('personalCardsDesc'),
+            features: ['Brand alignment', 'Multiple revisions', 'Print-ready files'],
+        },
+        {
+            icon: Code,
+            title: t('businessCards'),
+            description: t('businessCardsDesc'),
+            features: ['Profile optimization', 'Link strategy', 'Analytics setup'],
+        },
+        {
+            icon: Megaphone,
+            title: t('customDesign'),
+            description: t('customDesignDesc'),
+            features: ['Volume discounts', 'Team management', 'Custom packaging'],
+        },
+        {
+            icon: Wrench,
+            title: t('integration'),
+            description: t('integrationDesc'),
+            features: ['API access', 'White-label options', 'Priority support'],
+        },
+    ];
+
     return (
         <div className="py-20">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                        Our <span className="gradient-text">Services</span>
+                        <span className="gradient-text">{t('title')}</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                        Beyond NFC cards, we offer comprehensive solutions to elevate your digital presence.
+                        {t('subtitle')}
                     </p>
                 </div>
 
@@ -72,14 +75,14 @@ export default function ServicesPage() {
 
                 {/* CTA */}
                 <div className="glass rounded-2xl p-8 md:p-12 text-center">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Get Started?</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4">{t('support')}</h2>
                     <p className="text-gray-400 mb-6 max-w-xl mx-auto">
-                        Contact us to discuss your needs. We'll help you find the perfect solution.
+                        {t('supportDesc')}
                     </p>
                     <Link href="/contact">
                         <Button size="lg">
                             Contact Us
-                            <ArrowRight className="w-5 h-5 ml-2" />
+                            <ArrowRight className="w-5 h-5 ms-2" />
                         </Button>
                     </Link>
                 </div>

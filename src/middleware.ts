@@ -41,6 +41,16 @@ export async function middleware(request: NextRequest) {
   // Protected routes
   if (request.nextUrl.pathname.startsWith('/dashboard')) {
     if (!user) return NextResponse.redirect(new URL('/auth/login', request.url));
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profile?.role === 'admin') {
+      return NextResponse.redirect(new URL('/admin', request.url));
+    }
   }
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
@@ -59,7 +69,18 @@ export async function middleware(request: NextRequest) {
 
   // Redirect authenticated users away from auth pages
   if (request.nextUrl.pathname.startsWith('/auth')) {
-    if (user) return NextResponse.redirect(new URL('/dashboard', request.url));
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.role === 'admin') {
+        return NextResponse.redirect(new URL('/admin', request.url));
+      }
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
   }
 
   return response;

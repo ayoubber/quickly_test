@@ -107,91 +107,93 @@ export default function AdminClientsPage() {
             {/* Clients Table */}
             <Card>
                 <CardContent className="p-0">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-white/10">
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Client</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Username</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Links</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Status</th>
-                                <th className="text-left p-4 text-sm font-medium text-gray-400">Joined</th>
-                                <th className="text-right p-4 text-sm font-medium text-gray-400">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredClients.map((client) => (
-                                <tr key={client.id} className="border-b border-white/5 hover:bg-white/5">
-                                    <td className="p-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-gold-light flex items-center justify-center text-brand-navy font-bold">
-                                                {client.full_name?.[0] || '?'}
-                                            </div>
-                                            <div>
-                                                <p className="font-medium">{client.full_name || 'Unknown'}</p>
-                                                <p className="text-sm text-gray-400 truncate max-w-48">{client.bio || 'No bio'}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="p-4">
-                                        {client.username ? (
-                                            <code className="text-brand-gold">@{client.username}</code>
-                                        ) : (
-                                            <span className="text-gray-500">Not set</span>
-                                        )}
-                                    </td>
-                                    <td className="p-4">
-                                        <span className="font-medium">{client.links_count}</span>
-                                        <span className="text-gray-400 ml-1">links</span>
-                                    </td>
-                                    <td className="p-4">
-                                        {client.is_active ? (
-                                            <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded flex items-center gap-1 w-fit">
-                                                <CheckCircle className="w-3 h-3" />
-                                                Active
-                                            </span>
-                                        ) : (
-                                            <span className="px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded flex items-center gap-1 w-fit">
-                                                <Ban className="w-3 h-3" />
-                                                Disabled
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="p-4 text-gray-400">
-                                        {new Date(client.created_at).toLocaleDateString()}
-                                    </td>
-                                    <td className="p-4 text-right">
-                                        <div className="flex items-center justify-end gap-2">
-                                            {client.username && (
-                                                <Button size="sm" variant="ghost" asChild>
-                                                    <a href={`/u/${client.username}`} target="_blank">
-                                                        <ExternalLink className="w-4 h-4" />
-                                                    </a>
-                                                </Button>
-                                            )}
-                                            <Button
-                                                size="sm"
-                                                variant="outline"
-                                                onClick={() => toggleClientStatus(client.id, client.is_active)}
-                                                className={client.is_active ? 'text-red-400' : 'text-green-400'}
-                                            >
-                                                {client.is_active ? (
-                                                    <>
-                                                        <Ban className="w-4 h-4 mr-1" />
-                                                        Disable
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <CheckCircle className="w-4 h-4 mr-1" />
-                                                        Enable
-                                                    </>
-                                                )}
-                                            </Button>
-                                        </div>
-                                    </td>
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="border-b border-white/10">
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Client</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Username</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Links</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Status</th>
+                                    <th className="text-left p-4 text-sm font-medium text-gray-400">Joined</th>
+                                    <th className="text-right p-4 text-sm font-medium text-gray-400">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filteredClients.map((client) => (
+                                    <tr key={client.id} className="border-b border-white/5 hover:bg-white/5">
+                                        <td className="p-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-gold-light flex items-center justify-center text-brand-navy font-bold">
+                                                    {client.full_name?.[0] || '?'}
+                                                </div>
+                                                <div>
+                                                    <p className="font-medium">{client.full_name || 'Unknown'}</p>
+                                                    <p className="text-sm text-gray-400 truncate max-w-48">{client.bio || 'No bio'}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="p-4">
+                                            {client.username ? (
+                                                <code className="text-brand-gold">@{client.username}</code>
+                                            ) : (
+                                                <span className="text-gray-500">Not set</span>
+                                            )}
+                                        </td>
+                                        <td className="p-4">
+                                            <span className="font-medium">{client.links_count}</span>
+                                            <span className="text-gray-400 ml-1">links</span>
+                                        </td>
+                                        <td className="p-4">
+                                            {client.is_active ? (
+                                                <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded flex items-center gap-1 w-fit">
+                                                    <CheckCircle className="w-3 h-3" />
+                                                    Active
+                                                </span>
+                                            ) : (
+                                                <span className="px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded flex items-center gap-1 w-fit">
+                                                    <Ban className="w-3 h-3" />
+                                                    Disabled
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="p-4 text-gray-400">
+                                            {new Date(client.created_at).toLocaleDateString()}
+                                        </td>
+                                        <td className="p-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                {client.username && (
+                                                    <Button size="sm" variant="ghost" asChild>
+                                                        <a href={`/u/${client.username}`} target="_blank">
+                                                            <ExternalLink className="w-4 h-4" />
+                                                        </a>
+                                                    </Button>
+                                                )}
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    onClick={() => toggleClientStatus(client.id, client.is_active)}
+                                                    className={client.is_active ? 'text-red-400' : 'text-green-400'}
+                                                >
+                                                    {client.is_active ? (
+                                                        <>
+                                                            <Ban className="w-4 h-4 mr-1" />
+                                                            Disable
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <CheckCircle className="w-4 h-4 mr-1" />
+                                                            Enable
+                                                        </>
+                                                    )}
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     {filteredClients.length === 0 && (
                         <div className="p-8 text-center text-gray-400">
                             No clients found

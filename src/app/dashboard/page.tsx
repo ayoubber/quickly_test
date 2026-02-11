@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ExternalLink, Eye, MousePointerClick, CreditCard, ArrowUpRight } from 'lucide-react';
 import { formatNumber, formatRelativeTime } from '@/lib/utils/cn';
+import { getTranslations } from 'next-intl/server';
 
 export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const t = await getTranslations('dashboard');
 
   // Get profile
   const { data: profile } = await supabase
@@ -49,9 +51,9 @@ export default async function DashboardPage() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-2">{t('title')}</h1>
         <p className="text-gray-400">
-          Welcome back, {profile?.full_name || 'there'}!
+          {t('welcome', { name: profile?.full_name || 'there' })}
         </p>
       </div>
 
@@ -63,14 +65,14 @@ export default async function DashboardPage() {
               <ExternalLink className="w-6 h-6 text-brand-gold" />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold mb-1">Complete Your Profile</h3>
+              <h3 className="font-semibold mb-1">{t('completeProfile')}</h3>
               <p className="text-gray-400 text-sm mb-4">
-                Choose a username to activate your public profile page
+                {t('completeProfileDesc')}
               </p>
               <Link href="/dashboard/profile">
                 <Button size="sm">
-                  Set Up Profile
-                  <ArrowUpRight className="w-4 h-4 ml-2" />
+                  {t('setUpProfile')}
+                  <ArrowUpRight className="w-4 h-4 ms-2" />
                 </Button>
               </Link>
             </div>
@@ -81,24 +83,24 @@ export default async function DashboardPage() {
       {/* Stats Grid */}
       <div className="grid md:grid-cols-4 gap-6 mb-8">
         <StatsCard
-          title="Profile Views"
+          title={t('profileViews')}
           value={formatNumber(viewsCount || 0)}
           icon={<Eye className="w-5 h-5" />}
           change="+12.5%"
         />
         <StatsCard
-          title="Link Clicks"
+          title={t('linkClicks')}
           value={formatNumber(clicksCount || 0)}
           icon={<MousePointerClick className="w-5 h-5" />}
           change="+8.2%"
         />
         <StatsCard
-          title="Active Links"
+          title={t('activeLinks')}
           value={linksCount || 0}
           icon={<ExternalLink className="w-5 h-5" />}
         />
         <StatsCard
-          title="Your Cards"
+          title={t('cardsTapped')}
           value={cardsCount || 0}
           icon={<CreditCard className="w-5 h-5" />}
         />
@@ -110,11 +112,11 @@ export default async function DashboardPage() {
         {profile?.username && (
           <Card>
             <CardHeader>
-              <CardTitle>Your Public Profile</CardTitle>
+              <CardTitle>{t('editProfile')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-400 text-sm mb-4">
-                Share your profile link to let people connect with you
+                Share your profile link
               </p>
               <div className="flex items-center gap-2">
                 <code className="flex-1 px-4 py-2 bg-brand-navy-dark rounded-lg text-sm text-brand-gold border border-white/10">
@@ -133,7 +135,7 @@ export default async function DashboardPage() {
         {/* Recent Activity */}
         <Card>
           <CardHeader>
-            <CardTitle>Recent Views</CardTitle>
+            <CardTitle>{t('recentActivity')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -157,9 +159,9 @@ export default async function DashboardPage() {
 
       {/* Quick Links */}
       <div className="mt-8 grid md:grid-cols-3 gap-4">
-        <QuickLink href="/dashboard/links" title="Manage Links" description="Add, edit, or remove links" />
-        <QuickLink href="/dashboard/profile" title="Edit Profile" description="Customize your page" />
-        <QuickLink href="/dashboard/cards" title="Activate Card" description="Add a new card" />
+        <QuickLink href="/dashboard/links" title={t('manageLinks')} description="Add, edit, or remove links" />
+        <QuickLink href="/dashboard/profile" title={t('editProfile')} description="Customize your page" />
+        <QuickLink href="/dashboard/cards" title={t('cardsTapped')} description="Activate a card" />
       </div>
     </div>
   );

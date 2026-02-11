@@ -8,28 +8,6 @@ Premium SaaS platform for NFC & QR social cards with link-in-bio functionality.
 - **Backend**: Supabase (Auth, Postgres, Storage)
 - **Hosting**: Vercel
 
-## 📁 Project Structure
-
-```
-quickly/
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── (marketing)/        # Marketing pages (home, store, etc.)
-│   │   ├── auth/               # Authentication pages
-│   │   ├── dashboard/          # Client dashboard
-│   │   ├── admin/              # Admin panel
-│   │   ├── u/[slug]/           # Public profiles
-│   │   └── api/                # API routes
-│   ├── components/             # React components
-│   ├── lib/                    # Utilities & Supabase clients
-│   ├── actions/                # Server actions
-│   ├── hooks/                  # React hooks
-│   └── types/                  # TypeScript types
-├── supabase/
-│   ├── schema.sql              # Database schema + RLS
-│   └── seed.sql                # Demo data
-└── public/                     # Static assets
-```
 
 ## 🛠️ Quick Start
 
@@ -37,18 +15,7 @@ quickly/
 
 ```bash
 npm install
-```
 
-### 2. Setup Environment
-
-```bash
-cp .env.local.example .env.local
-```
-
-Edit `.env.local` with your Supabase credentials:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `NEXT_PUBLIC_APP_URL`
 
 ### 3. Setup Database
 

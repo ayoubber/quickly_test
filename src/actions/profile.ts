@@ -30,8 +30,25 @@ export async function updateProfile(formData: FormData) {
 
   const updates = validatedFields.data;
 
-  // Check username uniqueness if provided
-  if (updates.username) {
+  // Fetch current profile to check if username is already set
+  const { data: currentProfile } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('id', user.id)
+    .single();
+
+  // If username already exists, prevent changing it
+  if (currentProfile?.username && updates.username && updates.username !== currentProfile.username) {
+    return { error: 'Username cannot be changed once set' };
+  }
+
+  // If username already set, remove it from updates to prevent any change
+  if (currentProfile?.username) {
+    delete (updates as any).username;
+  }
+
+  // Check username uniqueness if setting for the first time
+  if (updates.username && !currentProfile?.username) {
     const { data: existing } = await supabase
       .from('profiles')
       .select('id')
@@ -44,6 +61,7 @@ export async function updateProfile(formData: FormData) {
     }
   }
 
+  // @ts-ignore - Supabase generic type resolution issue
   const { error } = await supabase
     .from('profiles')
     .update(updates)
@@ -65,9 +83,10 @@ export async function updateTheme(theme: ThemeConfig) {
     return { error: 'Not authenticated' };
   }
 
+  // @ts-ignore - Supabase generic type resolution issue
   const { error } = await supabase
     .from('profiles')
-    .update({ theme_json: theme as any })
+    .update({ theme_json: theme })
     .eq('id', user.id);
 
   if (error) {
@@ -75,6 +94,7 @@ export async function updateTheme(theme: ThemeConfig) {
   }
 
   // Revalidate profile page and public page
+  // @ts-ignore - Supabase generic type resolution issue
   const { data: profile } = await supabase
     .from('profiles')
     .select('username')
@@ -97,6 +117,7 @@ export async function updateTemplate(template_id: TemplateId) {
     return { error: 'Not authenticated' };
   }
 
+  // @ts-ignore - Supabase generic type resolution issue
   const { error } = await supabase
     .from('profiles')
     .update({ template_id })
@@ -107,6 +128,7 @@ export async function updateTemplate(template_id: TemplateId) {
   }
 
   // Revalidate profile page and public page
+  // @ts-ignore - Supabase generic type resolution issue
   const { data: profile } = await supabase
     .from('profiles')
     .select('username')
@@ -146,10 +168,10 @@ export async function uploadAvatar(formData: FormData) {
 
   const fileExt = file.name.split('.').pop();
   const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-  const filePath = `avatars/${fileName}`;
+  const filePath = `${fileName}`; // No need for 'avatars/' prefix if bucket is 'avatars'
 
   const { error: uploadError } = await supabase.storage
-    .from('public')
+    .from('avatars')
     .upload(filePath, file, {
       cacheControl: '3600',
       upsert: false,
@@ -160,9 +182,10 @@ export async function uploadAvatar(formData: FormData) {
   }
 
   const { data } = supabase.storage
-    .from('public')
+    .from('avatars')
     .getPublicUrl(filePath);
 
+  // @ts-ignore - Supabase generic type resolution issue
   const { error: updateError } = await supabase
     .from('profiles')
     .update({ avatar_url: data.publicUrl })
